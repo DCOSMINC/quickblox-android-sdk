@@ -49,6 +49,11 @@ public class CoreApp extends Application {
         }
     }
 
+    public void setCustomCredentials(){
+        //QBSettings.getInstance().init();
+        // TODO: 10.09.18
+    }
+
     public QbConfigs getQbConfigs(){
         return qbConfigs;
     }

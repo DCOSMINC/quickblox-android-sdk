@@ -32,7 +32,9 @@ public class SplashActivity extends CoreSplashActivity {
     }
 
     private void signInQB() {
-        if (!checkSignIn()) {
+        CredentialsActivity.start(this, message);
+        /*if (!checkSignIn()) {
+
             QBUser qbUser = CoreConfigUtils.getUserFromConfig(Consts.SAMPLE_CONFIG_FILE_NAME);
 
             QBUsers.signIn(qbUser).performAsync(new QBEntityCallback<QBUser>() {
@@ -53,7 +55,7 @@ public class SplashActivity extends CoreSplashActivity {
             });
         } else {
             proceedToTheNextActivityWithDelay();
-        }
+        }*/
     }
 
     @Override
@@ -63,7 +65,8 @@ public class SplashActivity extends CoreSplashActivity {
 
     @Override
     protected void proceedToTheNextActivity() {
-        MessagesActivity.start(this, message);
+        //MessagesActivity.start(this, message);
+        //CredentialsActivity.start(this, message);
         finish();
     }
 
