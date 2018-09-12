@@ -42,7 +42,7 @@ public class App extends CoreApp {
 
             @Override
             public void onSubscriptionDeleted(boolean success) {
-
+                Toaster.shortToast("Subscription Deleted");
             }
         });
     }

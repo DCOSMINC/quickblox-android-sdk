@@ -9,10 +9,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.quickblox.auth.QBAuth;
 import com.quickblox.auth.session.QBSettings;
 import com.quickblox.core.QBEntityCallback;
 import com.quickblox.core.ServiceZone;
 import com.quickblox.core.exception.QBResponseException;
+import com.quickblox.messages.services.QBPushManager;
 import com.quickblox.sample.core.CoreApp;
 import com.quickblox.sample.core.ui.activity.CoreSplashActivity;
 import com.quickblox.sample.core.utils.configs.CoreConfigUtils;
@@ -79,6 +81,7 @@ public class CredentialsActivity extends CoreSplashActivity implements View.OnCl
 
         iv_logo = findViewById(R.id.iv_logo);
         iv_logo.setOnClickListener(this);
+        iv_logo.setOnLongClickListener(this);
     }
 
     private boolean checkTextFields() {
@@ -100,7 +103,7 @@ public class CredentialsActivity extends CoreSplashActivity implements View.OnCl
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.iv_logo) {
-            fillByCustomCredentials();
+            fillByCustomCredentials(1);
         }
         if ((v.getId() == R.id.btn_connect) && checkTextFields()) {
             //((CoreApp) getApplication()).setCustomCredentials();
@@ -111,29 +114,47 @@ public class CredentialsActivity extends CoreSplashActivity implements View.OnCl
 
     @Override
     public boolean onLongClick(View v) {
-        signInQBbyDefaults();
+        if (v.getId() == R.id.iv_logo) {
+            fillByCustomCredentials(2);
+        }
+        if (v.getId() == R.id.btn_connect) {
+            signInQBbyDefaults();
+        }
         return true;
 
     }
 
-    private void fillByCustomCredentials() {
-        /*String appID = "72779";
-        String authKey = "T8r8-3dnfmejHds";
-        String authSecret = "N5RejRVHShtVhtk";
-        String accountKey = "J2wpVskzYqsyRHyxrA9w";
-        String apiServer = "https://api.quickblox.com";
-        String chatServer = "chat.quickblox.com";
-        String login = "pushtest01";
-        String password = "pushtest01";*/
+    private void fillByCustomCredentials(int code) {
+        String appID = "";
+        String authKey = "";
+        String authSecret = "";
+        String accountKey = "";
+        String apiServer = "";
+        String chatServer = "";
+        String login = "";
+        String password = "";
 
-        String appID = "72448";
-        String authKey = "f4HYBYdeqTZ7KNbb";
-        String authSecret = "ZC7dK39bOjVc-Z8";
-        String accountKey = "C4_z7nuaANnBYmsG_k98";
-        String apiServer = "https://api.quickblox.com";
-        String chatServer = "chat.quickblox.com";
-        String login = "test_user_id2";
-        String password = "test_user_id2";
+        if (code == 1) {
+            appID = "72779";
+            authKey = "T8r8-3dnfmejHds";
+            authSecret = "N5RejRVHShtVhtk";
+            accountKey = "J2wpVskzYqsyRHyxrA9w";
+            apiServer = "https://api.quickblox.com";
+            chatServer = "chat.quickblox.com";
+            login = "pushtest01";
+            password = "pushtest01";
+        }
+
+        if (code == 2) {
+            appID = "72448";
+            authKey = "f4HYBYdeqTZ7KNbb";
+            authSecret = "ZC7dK39bOjVc-Z8";
+            accountKey = "C4_z7nuaANnBYmsG_k98";
+            apiServer = "https://api.quickblox.com";
+            chatServer = "chat.quickblox.com";
+            login = "test_user_id2";
+            password = "test_user_id2";
+        }
 
         et_appId.setText(appID);
         et_authKey.setText(authKey);
