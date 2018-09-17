@@ -25,7 +25,7 @@ public class CoreApp extends Application {
         instance = this;
         initQBSessionManager();
         initQbConfigs();
-//        initCredentials();
+//        initCredentials();    // Credentials must initialize only once!
     }
 
     private void initQbConfigs() {

@@ -24,7 +24,7 @@ import com.quickblox.sample.pushnotifications.utils.Consts;
 import com.quickblox.users.QBUsers;
 import com.quickblox.users.model.QBUser;
 
-public class CredentialsActivity extends CoreSplashActivity implements View.OnClickListener, View.OnLongClickListener{
+public class CredentialsActivity extends CoreSplashActivity implements View.OnClickListener{
 
     private final String BLANK_ERROR = "This field can not be blank";
 
@@ -63,7 +63,7 @@ public class CredentialsActivity extends CoreSplashActivity implements View.OnCl
     @Override
     protected void proceedToTheNextActivity() {
         MessagesActivity.start(this, message);
-        //finish();
+        finish();
     }
 
     private void initUI() {
@@ -77,11 +77,8 @@ public class CredentialsActivity extends CoreSplashActivity implements View.OnCl
         et_password = findViewById(R.id.et_password);
         btn_connect = findViewById(R.id.btn_connect);
         btn_connect.setOnClickListener(this);
-        btn_connect.setOnLongClickListener(this);
-
         iv_logo = findViewById(R.id.iv_logo);
         iv_logo.setOnClickListener(this);
-        iv_logo.setOnLongClickListener(this);
     }
 
     private boolean checkTextFields() {
@@ -103,58 +100,22 @@ public class CredentialsActivity extends CoreSplashActivity implements View.OnCl
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.iv_logo) {
-            fillByCustomCredentials(1);
+            fillByCustomCredentials();
         }
         if ((v.getId() == R.id.btn_connect) && checkTextFields()) {
-            //((CoreApp) getApplication()).setCustomCredentials();
             signInQBbyCredentials();
-            // go to next activity
         }
     }
 
-    @Override
-    public boolean onLongClick(View v) {
-        if (v.getId() == R.id.iv_logo) {
-            fillByCustomCredentials(2);
-        }
-        if (v.getId() == R.id.btn_connect) {
-            signInQBbyDefaults();
-        }
-        return true;
-
-    }
-
-    private void fillByCustomCredentials(int code) {
-        String appID = "";
-        String authKey = "";
-        String authSecret = "";
-        String accountKey = "";
-        String apiServer = "";
-        String chatServer = "";
-        String login = "";
-        String password = "";
-
-        if (code == 1) {
-            appID = "72779";
-            authKey = "T8r8-3dnfmejHds";
-            authSecret = "N5RejRVHShtVhtk";
-            accountKey = "J2wpVskzYqsyRHyxrA9w";
-            apiServer = "https://api.quickblox.com";
-            chatServer = "chat.quickblox.com";
-            login = "pushtest01";
-            password = "pushtest01";
-        }
-
-        if (code == 2) {
-            appID = "72448";
-            authKey = "f4HYBYdeqTZ7KNbb";
-            authSecret = "ZC7dK39bOjVc-Z8";
-            accountKey = "C4_z7nuaANnBYmsG_k98";
-            apiServer = "https://api.quickblox.com";
-            chatServer = "chat.quickblox.com";
-            login = "test_user_id2";
-            password = "test_user_id2";
-        }
+    private void fillByCustomCredentials() {
+        String appID = "72448";
+        String authKey = "f4HYBYdeqTZ7KNbb";
+        String authSecret = "ZC7dK39bOjVc-Z8";
+        String accountKey = "C4_z7nuaANnBYmsG_k98";
+        String apiServer = "https://api.quickblox.com";
+        String chatServer = "chat.quickblox.com";
+        String login = "test_user_id2";
+        String password = "test_user_id2";
 
         et_appId.setText(appID);
         et_authKey.setText(authKey);
@@ -203,8 +164,8 @@ public class CredentialsActivity extends CoreSplashActivity implements View.OnCl
     private void signInQBbyDefaults() {
         if (!checkSignIn()) {
             QBUser qbUser = CoreConfigUtils.getUserFromConfig(Consts.SAMPLE_CONFIG_FILE_NAME);
-
             QBUsers.signIn(qbUser).performAsync(new QBEntityCallback<QBUser>() {
+
                 @Override
                 public void onSuccess(QBUser qbUser, Bundle bundle) {
                     proceedToTheNextActivity();
