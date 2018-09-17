@@ -18,7 +18,6 @@ public class App extends CoreApp {
         super.onCreate();
         instance = this;
         ActivityLifecycle.init(this);
-
         initPushManager();
     }
 
