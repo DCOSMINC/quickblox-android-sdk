@@ -76,7 +76,7 @@
             </intent-filter>
         </service>
 
-        <service android:name="com.quickblox.messages.services.fcm.QBFcmPushInstanceIDService">
+        <service android:name=".QBFcmPushInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>

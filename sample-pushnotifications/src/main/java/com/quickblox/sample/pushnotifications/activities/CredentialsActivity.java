@@ -14,9 +14,12 @@ import com.quickblox.auth.session.QBSettings;
 import com.quickblox.core.QBEntityCallback;
 import com.quickblox.core.ServiceZone;
 import com.quickblox.core.exception.QBResponseException;
+import com.quickblox.messages.QBPushNotifications;
+import com.quickblox.messages.model.QBSubscription;
 import com.quickblox.messages.services.QBPushManager;
 import com.quickblox.sample.core.CoreApp;
 import com.quickblox.sample.core.ui.activity.CoreSplashActivity;
+import com.quickblox.sample.core.utils.SharedPrefsHelper;
 import com.quickblox.sample.core.utils.configs.CoreConfigUtils;
 import com.quickblox.sample.core.utils.constant.GcmConsts;
 import com.quickblox.sample.pushnotifications.R;
@@ -24,9 +27,19 @@ import com.quickblox.sample.pushnotifications.utils.Consts;
 import com.quickblox.users.QBUsers;
 import com.quickblox.users.model.QBUser;
 
+import java.util.ArrayList;
+
 public class CredentialsActivity extends CoreSplashActivity implements View.OnClickListener{
 
-    private final String BLANK_ERROR = "This field can not be blank";
+    private static final String BLANK_ERROR = "This field can not be blank";
+    private static final String APP_ID = "appId";
+    private static final String ACCOUNT_KEY = "accountKey";
+    private static final String AUTH_KEY = "authKey";
+    private static final String AUTH_SECRET = "authSecret";
+    private static final String API_SERVER = "apiServer";
+    private static final String CHAT_SERVER = "chatServer";
+    private static final String USER_LOGIN = "login";
+    private static final String USER_PASSWORD = "password";
 
     private EditText et_appId;
     private EditText et_accountKey;
@@ -53,6 +66,7 @@ public class CredentialsActivity extends CoreSplashActivity implements View.OnCl
         setContentView(R.layout.activity_credentials);
         message = getIntent().getStringExtra(GcmConsts.EXTRA_GCM_MESSAGE); // to set in Message Activity
         initUI();
+        fillBySavedCredentials();
     }
 
     @Override
@@ -108,14 +122,14 @@ public class CredentialsActivity extends CoreSplashActivity implements View.OnCl
     }
 
     private void fillByCustomCredentials() {
-        String appID = "72448";
-        String authKey = "f4HYBYdeqTZ7KNbb";
-        String authSecret = "ZC7dK39bOjVc-Z8";
-        String accountKey = "C4_z7nuaANnBYmsG_k98";
+        String appID = "73803";
+        String authKey = "qp4zDcV8mk29Qp9";
+        String authSecret = "Hm2KgDE6eeMZHu5";
+        String accountKey = "uK_8uinNyz8-npTNB6tx";
         String apiServer = "https://api.quickblox.com";
         String chatServer = "chat.quickblox.com";
-        String login = "test_user_id2";
-        String password = "test_user_id2";
+        String login = "testuser01";
+        String password = "testuser";
 
         et_appId.setText(appID);
         et_authKey.setText(authKey);
@@ -125,6 +139,54 @@ public class CredentialsActivity extends CoreSplashActivity implements View.OnCl
         et_chatServer.setText(chatServer);
         et_login.setText(login);
         et_password.setText(password);
+    }
+
+    private void fillBySavedCredentials() {
+        String appID = getSharedPreferencesValue(APP_ID);
+        String authKey = getSharedPreferencesValue(AUTH_KEY);
+        String authSecret = getSharedPreferencesValue(AUTH_SECRET);
+        String accountKey = getSharedPreferencesValue(ACCOUNT_KEY);
+        String apiServer = getSharedPreferencesValue(API_SERVER);
+        String chatServer = getSharedPreferencesValue(CHAT_SERVER);
+        String login = getSharedPreferencesValue(USER_LOGIN);
+        String password = getSharedPreferencesValue(USER_PASSWORD);
+
+        et_appId.setText(appID);
+        et_authKey.setText(authKey);
+        et_authSecret.setText(authSecret);
+        et_accountKey.setText(accountKey);
+        et_apiServer.setText(apiServer);
+        et_chatServer.setText(chatServer);
+        et_login.setText(login);
+        et_password.setText(password);
+    }
+
+    private String getSharedPreferencesValue(String key) {
+        String value = "";
+        if (SharedPrefsHelper.getInstance().has(key)) {
+            value = SharedPrefsHelper.getInstance().get(key);
+        }
+        return value;
+    }
+
+    private void saveCredentials() {
+        String appID = et_appId.getText().toString();
+        String authKey = et_authKey.getText().toString();
+        String authSecret = et_authSecret.getText().toString();
+        String accountKey = et_accountKey.getText().toString();
+        String apiServer = et_apiServer.getText().toString();
+        String chatServer = et_chatServer.getText().toString();
+        String login = et_login.getText().toString();
+        String password = et_password.getText().toString();
+
+        SharedPrefsHelper.getInstance().save(APP_ID, appID);
+        SharedPrefsHelper.getInstance().save(AUTH_KEY, authKey);
+        SharedPrefsHelper.getInstance().save(AUTH_SECRET, authSecret);
+        SharedPrefsHelper.getInstance().save(ACCOUNT_KEY, accountKey);
+        SharedPrefsHelper.getInstance().save(API_SERVER, apiServer);
+        SharedPrefsHelper.getInstance().save(CHAT_SERVER, chatServer);
+        SharedPrefsHelper.getInstance().save(USER_LOGIN, login);
+        SharedPrefsHelper.getInstance().save(USER_PASSWORD, password);
     }
 
     private void signInQBbyCredentials() {
@@ -144,9 +206,11 @@ public class CredentialsActivity extends CoreSplashActivity implements View.OnCl
         String password = et_password.getText().toString();
         QBUser qbUser = new QBUser(login, password);
         QBUsers.signIn(qbUser).performAsync(new QBEntityCallback<QBUser>() {
+
             @Override
             public void onSuccess(QBUser qbUser, Bundle bundle) {
                 proceedToTheNextActivity();
+                saveCredentials();
             }
 
             @Override
