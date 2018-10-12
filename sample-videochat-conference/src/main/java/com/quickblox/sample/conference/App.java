@@ -22,8 +22,8 @@ public class App extends CoreApp {
         super.onCreate();
         Fabric.with(this, new Crashlytics());
         initApplication();
-        initConferenceConfig();
-        checkMultiServer();
+        //initConferenceConfig();
+        //checkMultiServer();
     }
 
     private void initApplication() {

@@ -32,7 +32,7 @@ public class SplashActivity extends CoreSplashActivity {
 
     @Override
     protected void proceedToTheNextActivity() {
-        LoginActivity.start(this);
+        CredentialsActivity.start(this);
         finish();
     }
 
